@@ -1,37 +1,69 @@
 module.exports = function(object) {
-  function getBPos(text) {
-    var a = 0;
-    var start = "n";
-    var end = false;
-    var index = 0;
-    var t = 0;
-    for (var i = 0;i<text.length;i++) {
-      a = text.indexOf("{",index)
-      
-      if (a == -1) break;
-        if (start == "n") start = a;
-    index = a + 1;
-          t ++;
-      
-    }
-index = 0;
-    for (var i = 0; i < t; i++) {
-        a = text.indexOf("}",index)
-        
-        if (a == -1) break;
-        index = a + 1;
-    }
+  stringify(object)
+function stringify(object,level,seen,re) {
+     if (!seen) seen = [];
+     
+     if (!level) level = 1;
+     if (!re) {
+         function getList(l,g) {
+             var final = [];
+             if (!g) g = [];
+             
+             if (typeof l != "object") {
+                return final
+             }
+             g.push(l)
+             for (var i in l) {
+                 if (g.indexOf(l[i]) != -1) {
+                     final.push(l[i])
+                     continue;
+                 }
+                 final.concat(getList(l[i],g))
+             }
+             return final;
+         }
+        re = getList(object)
+        console.log(re)
+     }
+     var final = "";
+     var f = "";
     
-    return {start: start,end: index - 1}
+     var k = "";
+     for (var i in seen) {
+         if (!seen[i]) continue;
+         if (seen[i].ob == object) {
+             return "]" + seen[i].in
+         }
+     }
+     
     
-}
- function stringify(object) {
-  if (typeof object == "array") {
+ if (re.indexOf(object) != -1) {
+     k = "["
+     seen.push({ob:object,in:seen.length});
     
+ } 
+     if (object.constructor == Array) {
+     seen.push(object)
+      for (var i = 0; i < object.length; i++) {
+          final += f + stringify(object[i],level + 1,seen,re)
+          f = "|"
+      }
+      if ((object.length - 1) & 1) {
+          final += "|"
+      }
+     
+      return k + "{" + final + "}"
   } else if (typeof object == "object") {
-    
+      seen.push(object)
+      var addon = "";
+      for (var i in object) {
+          final += f + stringify(object[i],level + 1,seen,re);
+          f = "|";
+          addon += "|" + i;
+      }
+      return k + "{" + final + addon + "}"
   } else {
-    return object;
+      return object
   }
  }
 }
