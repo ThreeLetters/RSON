@@ -14,7 +14,7 @@
    limitations under the License.
 */
 module.exports = function(object) {
-  stringify(object)
+  return stringify(object)
 function stringify(object,level,seen,re) {
      if (!seen) seen = [];
      
@@ -38,7 +38,6 @@ function stringify(object,level,seen,re) {
              return final;
          }
         re = getList(object)
-        console.log(re)
      }
      var final = "";
      var f = "";
