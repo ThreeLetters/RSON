@@ -14,7 +14,7 @@
    limitations under the License.
 */
 module.exports = function(text) {
-    parse(text)
+  return parse(text)
 
 function getBPos(text) {
     var a = 0;
