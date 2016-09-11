@@ -33,7 +33,7 @@ function stringify(object,level,seen,re) {
                      final.push(l[i])
                      continue;
                  }
-                 final.concat(getList(l[i],g))
+                 final = final.concat(getList(l[i],g))
              }
              return final;
          }
