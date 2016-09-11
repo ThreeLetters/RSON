@@ -32,7 +32,7 @@ function stringify(object,level,seen,re) {
      for (var i in seen) {
          if (!seen[i]) continue;
          if (seen[i].ob == object) {
-             return "{]" + seen[i].in + "}"
+             return "]" + seen[i].in
          }
      }
      
