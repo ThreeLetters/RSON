@@ -15,9 +15,11 @@ code
 ```
 var RSON = require('rson');
 
+...
 
 RSON.stringify(objects); // use to stringify
 
+...
 
 RSON.parse(rsontext); // use to parse
 ```
