@@ -116,6 +116,6 @@ function getBPos(text) {
         } else {
             return d[0]
         }
-        
+        return final;
     }
 }
