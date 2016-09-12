@@ -75,6 +75,18 @@ function getBPos(text) {
             return rlist[text.substring(1)]
             
         }
+        if (text.charAt(0) == "!") {
+            var a = getBPos(text)
+        text = text.substring(a.start + 1,a.end)
+            try {
+               var poiu = "[Unevalutated Function]";
+            eval(text)
+            return poiu
+            } catch (e) {
+               console.log("Couldnt evalute function " + text + " Error: " + e);
+               return "[Unevalutated Function]"
+            }
+        }
         
       if (text.indexOf("|") == -1) return text
         if (!level) level = 1
