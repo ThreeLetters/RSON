@@ -80,7 +80,7 @@ function stringify(object,level,seen,re) {
      var t = object.toString();
      if (t) {
         var a = t.indexOf("(");
-        t = t.substring(a)
+        t = t.substring(a + 1)
      }
      return "!{" + t + "}"
      } else {
