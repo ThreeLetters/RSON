@@ -17,7 +17,8 @@ try {
 
 var a = RSON.stringify(objects) // RSON can!
 console.log("this is the output for RSON! " + a)
-console.log("RSON can parse it back... " + RSON.parse(a))
+console.log("RSON can parse it back... ")
+console.log(RSON.parse(a))
 objects = {
    name: "RSON",
    awesomeness: "to the sky",
