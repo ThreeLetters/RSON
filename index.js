@@ -1,4 +1,7 @@
 module.exports = {
   stringify: require('./stringify.js'),
-  parse: require('./parse.js')
+  parse: require('./parse.js'),
+  version: function() {
+    return JSON.parse(require('fs').readFileSync('./package.json',"utf8")).version
+  }
 }
