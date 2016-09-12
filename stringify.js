@@ -78,7 +78,7 @@ function stringify(object,level,seen,re) {
       return k + "{" + final + addon + "}"
   } else if (typeof object == "function") {
      var t = object.toString();
-     if (t) t = t.replace("function(","")
+     if (t) t = t.replace("function (","")
      return "!{" + t + "}"
      } else {
       return object
