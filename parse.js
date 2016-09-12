@@ -80,7 +80,7 @@ function getBPos(text) {
         text = text.substring(a.start + 1,a.end)
             try {
                var poiu = "[Unevalutated Function]";
-            eval(text)
+            eval("poiu = "text)
             return poiu
             } catch (e) {
                console.log("Couldnt evalute function " + text + " Error: " + e);
