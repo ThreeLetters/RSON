@@ -76,7 +76,9 @@ function stringify(object,level,seen,re) {
           addon += "|" + i;
       }
       return k + "{" + final + addon + "}"
-  } else {
+  } else if (typeof object == "function") {
+     return "{var poiu=" + object.toString() + "}"
+     } else {
       return object
   }
  }
