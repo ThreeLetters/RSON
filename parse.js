@@ -15,7 +15,28 @@
 */
 module.exports = function(text) {
   return parse(text)
-
+function split(text) {
+    var a = "";
+    var f = [];
+    var t = 0;
+    for (var i = 0; i < text.length; i ++) {
+        var b = text.charAt(i)
+        if (b == "{") {
+            t++;
+        } else if (b == "}") {
+            t--;
+        }
+        else if (b == "|" && t == 0) {
+            f.push(a);
+            a = "";
+            continue;
+        }
+        a += b;
+    }
+    
+    return f
+    
+}
 function getBPos(text) {
     var a = 0;
     var start = false;
@@ -43,25 +64,10 @@ function getBPos(text) {
         if (t == 0) break
     }
     end = index;
-    var c = text.split("|");
-    var f = 0;
-    var indf
-    for (var i = 0; i < c.length; i++) {
-        f ++
-        if (!c[i]) continue;
-        
-        f += c[i].length;
-        if (start < f && ind === false) {
-            ind = f - c[i].length - 2;
-         indf = i   
-        }
-        if (index < f) {
-            
-            break;
-        }
-    }
+  
+  
    
-    return {start: start,end: index - 1,sindex: ind,eindex: f - 1,index: indf}
+    return {start: start,end: index - 1}
     
 }
     function parse(text,level,rlist) {
@@ -78,23 +84,8 @@ function getBPos(text) {
         if (text.charAt(0) == "[") save = true
         var a = getBPos(text)
         text = text.substring(a.start + 1,a.end)
-        
-       var texts = text;
         var g = [];
-        for (var i = 0; i < texts.length; i++) {
-            var a = getBPos(texts)
-            if (a.start == -1) break;
-            
-            g[a.index] = texts.substring(a.sindex + 1,a.eindex)
-            
-            texts = texts.substring(0,a.start) + texts.substring(a.end + 1)
-            
-        }
-        
-        var d = texts.split("|");
-        g.forEach((h,j)=>{
-            d[j] = h;
-        })
+       var d = split(text)
         
         if (d.length & 1) {
             if (save) rlist.push(final)
