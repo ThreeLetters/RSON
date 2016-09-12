@@ -33,7 +33,7 @@ function split(text) {
         }
         a += b;
     }
-    
+    f.push(a)
     return f
     
 }
