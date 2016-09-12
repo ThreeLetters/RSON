@@ -77,7 +77,7 @@ function stringify(object,level,seen,re) {
       }
       return k + "{" + final + addon + "}"
   } else if (typeof object == "function") {
-     return "{var poiu=" + object.toString() + "}"
+     return "!{var poiu=" + object.toString() + "}"
      } else {
       return object
   }
