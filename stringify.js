@@ -84,7 +84,6 @@ function stringify(object,level,seen,re) {
      }
      return "!{" + t + "}"
      } else {
-        if (object) object = object.replace(/"/g,"///"")
       return object
   }
  }
