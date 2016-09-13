@@ -23,3 +23,18 @@ RSON.stringify(objects); // use to stringify
 
 RSON.parse(rsontext); // use to parse
 ```
+
+### For browsers
+
+for minified `https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson-minified.js`
+
+
+non-minified `https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson.js`
+
+##### Usage
+
+```
+<script type="text/javascript" src="https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson-minified.js"></script>
+```
+
+
