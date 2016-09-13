@@ -24,14 +24,14 @@ function split(text) {
     var g = true;
     for (var i = 0; i < text.length; i ++) {
         var b = text.charAt(i)
-        if (b=="\\") {
+        if (b=="\\" && t != 0) {
         h = !h;
         a += b
         continue;
-        } else if (b == "\"" && h && g) {
+        } else if (b == "\"" && h && g && t != 0) {
           
         l = !l
-       } else if (b == "'" && h && l) {
+       } else if (b == "'" && h && l && t != 0) {
           g = !g
           } else if (b == "{" && l && h) {
             t++;
