@@ -19,11 +19,23 @@ function split(text) {
     var a = "";
     var f = [];
     var t = 0;
+    var l = true;
+    var h = true;
+    var g = true;
     for (var i = 0; i < text.length; i ++) {
         var b = text.charAt(i)
-        if (b == "{") {
+        if (b=="\\") {
+        h = !h;
+        a += b
+        continue;
+        } else if (b == "\"" && h && g) {
+          
+        l = !l
+       } else if (b == "'" && h && l) {
+          g = !g
+          } else if (b == "{" && l && h) {
             t++;
-        } else if (b == "}") {
+        } else if (b == "}" && l && h) {
             t--;
         }
         else if (b == "|" && t == 0) {
@@ -32,6 +44,7 @@ function split(text) {
             continue;
         }
         a += b;
+        h = true;
     }
     f.push(a)
     return f
