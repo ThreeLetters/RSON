@@ -21,22 +21,27 @@ function split(text) {
     var t = 0;
     var l = true;
     var h = true;
-    var g = true;
+    var g = true
+    var j = false;
     for (var i = 0; i < text.length; i ++) {
         var b = text.charAt(i)
-        if (b=="\\" && t != 0) {
+        if (b=="!" && text.charAt(i + 1) == "{") {
+           j = true;
+        }
+        else if (b=="\\" && j) {
         h = !h;
         a += b
         continue;
-        } else if (b == "\"" && h && g && t != 0) {
+        } else if (b == "\"" && h && g && j) {
           
         l = !l
-       } else if (b == "'" && h && l && t != 0) {
+       } else if (b == "'" && h && l && j) {
           g = !g
           } else if (b == "{" && l && h) {
             t++;
         } else if (b == "}" && l && h) {
             t--;
+            if (t == 0 && j) j = false;
         }
         else if (b == "|" && t == 0) {
             f.push(a);
