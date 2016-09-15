@@ -165,7 +165,8 @@ function getBPos(text) {
     return {start: start,end: index - 1}
     
 }
-    function parse(text,level,rlist) {
+    function parse(text,level,rlist,parent) {
+       if (!parent) parent = [];
         if (text.charAt(0) == "]") {
             return rlist[text.substring(1)]
             
@@ -175,7 +176,8 @@ function getBPos(text) {
         text = text.substring(a.start + 1,a.end)
             try {
                var poiu = "[Unevalutated Function]";
-            eval("poiu = function(" + text)
+               
+            eval("poiu = function(" + text + ".bind(parent)")
             return poiu
             } catch (e) {
                console.log("Couldnt evalute function function(" + text + " Error: " + e);
@@ -198,7 +200,7 @@ function getBPos(text) {
             if (save) rlist.push(final)
             for (var i = 0; i < d.length; i ++) {
                 if (!d[i]) continue;
-                final[i] = parse(d[i],level + 1,rlist)
+                final[i] = parse(d[i],level + 1,rlist,final)
             }
            
             return final;
@@ -209,7 +211,7 @@ function getBPos(text) {
             var a = d.length/2
             for (var i = 0; i < a; i ++) {
                 if (!d[i]) continue;
-                final[d[i + a]] = parse(d[i],level + 1,rlist)
+                final[d[i + a]] = parse(d[i],level + 1,rlist,final)
             }
         } else {
             return d[0]
