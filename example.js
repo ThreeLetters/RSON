@@ -35,8 +35,7 @@ console.log("RSON can also stringify functions!");
 objects = {
    name: "RSON",
    awesomeness: "Better than JSON",
-   feature: "Functions! (and auto-binding)",
-   anotherfeature: function() {return this.feature} // "this" is still binded to the function during translation to and from RSON
+   anotherfeature: function() {return "Functions!"}
 }
 console.log("RSON can also store functions. Example")
 console.log(objects);
@@ -47,4 +46,3 @@ var b = RSON.parse(a);
 console.log(b);
 console.log("Calling the function..");
 console.log(b.anotherfeature())
-
