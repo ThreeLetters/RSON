@@ -99,8 +99,8 @@ function getBPos(text) {
         text = text.substring(a.start + 1,a.end)
             try {
                var poiu = "[Unevalutated Function]";
-               var p = (typeof parent == "object" && parent.constructor != Array) ? ".bind(parent)" : "";
-            eval("poiu = function(" + text + p)
+               
+            eval("poiu = function(" + text + ".bind(parent)")
             return poiu
             } catch (e) {
                console.log("Couldnt evalute function function(" + text + " Error: " + e);
