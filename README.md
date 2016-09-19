@@ -1,3 +1,5 @@
+[![NPM] (https://img.shields.io/badge/Module-Npm-blue.svg)] (https://www.npmjs.com/package/rson)
+[![Donate] (https://img.shields.io/badge/Donate-Paypal-brightgreen.svg)] (paypal.me/andrews54757)
 # RSON
 Recursive Simplified Object Notation
 
