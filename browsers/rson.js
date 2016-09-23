@@ -218,3 +218,17 @@ function getBPos(text) {
     }
 }
   }
+  
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+     module.exports = RSON;
+   }
+   else {
+     if (typeof define === 'function' && define.amd) {
+       define([], function() {
+         return RSON;
+       });
+     }
+     else {
+       window.RSON = RSON;
+     }
+    }
