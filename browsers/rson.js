@@ -86,7 +86,7 @@ function stringify(object,level,seen,re) {
      }
      return "!{" + t + "}"
      } else {
-      return object
+      return object.toString()
   }
  }
 },
