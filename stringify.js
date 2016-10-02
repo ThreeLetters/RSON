@@ -24,7 +24,7 @@ function stringify(object,level,seen,re) {
              var final = [];
              if (!g) g = [];
              
-             if (typeof l != "object") {
+             if (l === undefined || typeof l != "object") {
                 return final
              }
              g.push(l)
@@ -45,7 +45,7 @@ function stringify(object,level,seen,re) {
      var k = "";
      for (var i in seen) {
          if (!seen[i]) continue;
-         if (object !== undefined && seen[i].ob == object) {
+         if (seen[i].ob == object) {
              return "]" + seen[i].in
          }
      }
