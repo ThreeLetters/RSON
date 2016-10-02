@@ -18,6 +18,7 @@ var RSON = {
 stringify: function(object) {
   return stringify(object)
 function stringify(object,level,seen,re) {
+ if (object === undefined) return object
      if (!seen) seen = [];
      
      if (!level) level = 1;
@@ -26,7 +27,7 @@ function stringify(object,level,seen,re) {
              var final = [];
              if (!g) g = [];
              
-             if (l == undefined || typeof l != "object") {
+             if (typeof l != "object") {
                 return final
              }
              g.push(l)
@@ -46,7 +47,7 @@ function stringify(object,level,seen,re) {
     
      var k = "";
      for (var i in seen) {
-         if (!seen[i] || !seen[i].ob) continue;
+         if (!seen[i]) continue;
          if (seen[i].ob == object) {
              return "]" + seen[i].in
          }
