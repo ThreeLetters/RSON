@@ -28,15 +28,15 @@ RSON.parse(rsontext); // use to parse
 
 ### For browsers
 
-for minified `https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson-minified.js`
+for minified `https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson-minified.js`
 
 
-non-minified `https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson.js`
+non-minified `https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson.js`
 
 ##### Usage
 
 ```
-<script type="text/javascript" src="https://raw.githubusercontent.com/AJS-development/RSON/master/browsers/rson-minified.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson-minified.js"></script>
 ```
 
 
