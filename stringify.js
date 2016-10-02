@@ -16,6 +16,7 @@
 module.exports = function(object) {
   return stringify(object)
 function stringify(object,level,seen,re) {
+   if (object === undefined) return object
      if (!seen) seen = [];
      
      if (!level) level = 1;
@@ -24,7 +25,7 @@ function stringify(object,level,seen,re) {
              var final = [];
              if (!g) g = [];
              
-             if (l === undefined || typeof l != "object") {
+             if (typeof l != "object") {
                 return final
              }
              g.push(l)
