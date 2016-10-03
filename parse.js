@@ -15,7 +15,7 @@
 */
 module.exports = function(text) {
   return parse(text)
-function split(text) { // Splits the text at "|" marks. Ignores "|" inside of {}. INEFFICIENT!!
+function split(text) { // Splits the text at "|" marks. Ignores "|" inside of {}. INEFFICIENT!! (because it is recursive, look at bottom)
     var a = "";
     var f = [];
     var t = 0;
@@ -140,3 +140,14 @@ function getBPos(text) { // get the indexes of "{" and "}"
         return final;
     }
 }
+/*
+The reason why the split function is inefficient is not because of the function itself, it is mostly because of the way it is used
+
+It is so that
+
+"item1|item2|item3|{item1|item2}|item4" is not interpreted as Array["item1","item2","item3","{item1","item2}","item4"]
+
+but instead is Array["item1","item2","item3","{item1|item2}","item4"]
+
+then, it would take "{item1|item2}" and do it all over again. Which is a waste, since the split functions effeciency is O(n) where n is the amount of chars
+*/
