@@ -15,7 +15,7 @@
 */
 module.exports = function(text) {
   return parse(text)
-function split(text) {
+function split(text) { // Splits the text at "|" marks. Ignores "|" inside of {}. INEFFICIENT!!
     var a = "";
     var f = [];
     var t = 0;
@@ -55,7 +55,7 @@ function split(text) {
     return f
     
 }
-function getBPos(text) {
+function getBPos(text) { // get the indexes of "{" and "}"
     var a = 0;
     var start = false;
     var end = false;
@@ -90,10 +90,10 @@ function getBPos(text) {
 }
     function parse(text,level,rlist) {
         if (text.charAt(0) == "]") {
-            return rlist[text.substring(1)]
+            return rlist[text.substring(1)] // circular structures list
             
         }
-        if (text.charAt(0) == "!") {
+        if (text.charAt(0) == "!") { // function
             var a = getBPos(text)
         text = text.substring(a.start + 1,a.end)
             try {
@@ -106,18 +106,18 @@ function getBPos(text) {
             }
         }
         
-      if (text.indexOf("|") == -1) return text
+      if (text.indexOf("|") == -1) return text // just text/numerical
         if (!level) level = 1
             var final = [];
             if (!rlist) rlist = [];
         var save = false;
-        if (text.charAt(0) == "[") save = true
-        var a = getBPos(text)
+        if (text.charAt(0) == "[") save = true // save this object as it will be called later
+        var a = getBPos(text) // remove the surrounding brackets
         text = text.substring(a.start + 1,a.end)
         var g = [];
-       var d = split(text)
+       var d = split(text) // split the text by "|"
         
-        if (d.length & 1) {
+        if (d.length & 1) { // array
             if (save) rlist.push(final)
             for (var i = 0; i < d.length; i ++) {
                 if (!d[i]) continue;
@@ -125,7 +125,7 @@ function getBPos(text) {
             }
            
             return final;
-        } else 
+        } else // object
         if (d[1]) {
             final = {};
             if (save) rlist.push(final)
@@ -134,7 +134,7 @@ function getBPos(text) {
                 if (!d[i]) continue;
                 final[d[i + a]] = parse(d[i],level + 1,rlist)
             }
-        } else {
+        } else { // text/number
             return d[0]
         }
         return final;
