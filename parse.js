@@ -28,22 +28,22 @@ function split(text) { // Splits the text at "|" marks. Ignores "|" inside of {}
         if (b=="!" && text.charAt(i + 1) == "{") {
            j = true;
         }
-        else if (b=="\\" && j) {
+        else if (b=="\\" && j) { // if the char is the escape char, ignore the next one
         h = !h;
         a += b
         continue;
-        } else if (b == "\"" && h && g && j) {
+        } else if (b == "\"" && h && g && j) { // if it has ", then ignore any { or } as functions might contain strings with only one { or } (non matching)
           
         l = !l
-       } else if (b == "'" && h && l && j) {
+       } else if (b == "'" && h && l && j) { // same with ', but also ignore it if it is inside ".
           g = !g
-          } else if (b == "{" && l && h) {
+          } else if (b == "{" && l && h) { // check if it is { and add to t
             t++;
-        } else if (b == "}" && l && h) {
+        } else if (b == "}" && l && h) { // check if it is } and subtract to t
             t--;
-            if (t == 0 && j) j = false;
+            if (t == 0 && j) j = false; 
         }
-        else if (b == "|" && t == 0) {
+        else if (b == "|" && t == 0) {  // if the char is |, split the text, but if t is not 0, then dont.
             f.push(a);
             a = "";
             continue;
