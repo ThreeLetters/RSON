@@ -14,14 +14,14 @@
    limitations under the License.
 */
 module.exports = function(object) {
-  return stringify(object)
-function stringify(object,level,seen,re) {
-   if (object === undefined) return object
+  return stringify(object) // call the function
+function stringify(object,level,seen,re) {// define the stringify function as it is recursive
+   if (object === undefined) return object // if the input is undefined, return it
      if (!seen) seen = [];
      
      if (!level) level = 1;
      if (!re) {
-         function getList(l,g) {
+         function getList(l,g) { // get list of repeated objects
              var final = [];
              if (!g) g = [];
              
@@ -38,26 +38,26 @@ function stringify(object,level,seen,re) {
              }
              return final;
          }
-        re = getList(object)
+        re = getList(object) // re is the list of circular objects. Runs first before stringifying anything
      }
-     var final = "";
+     var final = ""; // Final string
      var f = "";
     
      var k = "";
-     for (var i in seen) {
+     for (var i in seen) { // checks if an previously indexed object is the same as the current one
          if (!seen[i]) continue;
          if (seen[i].ob == object) {
-             return "]" + seen[i].in
+             return "]" + seen[i].in // sets the second circular refrence to "]index" with index being the index of the repeated.
          }
      }
      
     
- if (re.indexOf(object) != -1) {
-     k = "["
-     seen.push({ob:object,in:seen.length});
+ if (re.indexOf(object) != -1) {// if the object is found to be in the circular list.
+     k = "[" // tells the interpreter to store this object as it will be reused
+     seen.push({ob:object,in:seen.length}); // pushes the object to the seen list, with its index as well
     
  } 
-     if (object.constructor == Array) {
+     if (object.constructor == Array) { // if it is an array
      seen.push(object)
       for (var i = 0; i < object.length; i++) {
           final += f + stringify(object[i],level + 1,seen,re)
@@ -68,7 +68,7 @@ function stringify(object,level,seen,re) {
       }
      
       return k + "{" + final + "}"
-  } else if (typeof object == "object") {
+  } else if (typeof object == "object") { // it is just an object
       seen.push(object)
       var addon = "";
       for (var i in object) {
@@ -77,7 +77,7 @@ function stringify(object,level,seen,re) {
           addon += "|" + i;
       }
       return k + "{" + final + addon + "}"
-  } else if (typeof object == "function") {
+  } else if (typeof object == "function") { // if it is a function
      var t = object.toString();
      if (t) {
         var a = t.indexOf("(");
