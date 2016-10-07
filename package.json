@@ -1,6 +1,6 @@
 {
   "name": "rson",
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "Recursive Simplified Object Notation",
   "main": "index.js",
   "tonicExampleFilename": "example.js",
