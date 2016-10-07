@@ -14,14 +14,14 @@
    limitations under the License.
 */
 module.exports = function(object) {
-  return stringify(object) // call the function
-function stringify(object,level,seen,re) {// define the stringify function as it is recursive
-   if (object === undefined) return object // if the input is undefined, return it
+  return stringify(object)
+function stringify(object,level,seen,re) {
+   if (object === undefined) return object
      if (!seen) seen = [];
      
      if (!level) level = 1;
      if (!re) {
-         function getList(l,g) { // get list of repeated objects
+         function getList(l,g) {
              var final = [];
              if (!g) g = [];
              
@@ -38,27 +38,27 @@ function stringify(object,level,seen,re) {// define the stringify function as it
              }
              return final;
          }
-        re = getList(object) // re is the list of circular objects. Runs first before stringifying anything
+        re = getList(object)
      }
-     var final = ""; // Final string
+     var final = "";
      var f = "";
     
      var k = "";
-     for (var i in seen) { // checks if an previously indexed object is the same as the current one
-         if (!seen[i]) continue;
-         if (seen[i].ob == object) {
-             return "]" + seen[i].in // sets the second circular refrence to "]index" with index being the index of the repeated.
-         }
+     var ind = seen.indexOf(object) 
+     if (ind != -1) {
+         return "]" + ind
+         
      }
      
     
- if (re.indexOf(object) != -1) {// if the object is found to be in the circular list.
-     k = "[" // tells the interpreter to store this object as it will be reused
-     seen.push({ob:object,in:seen.length}); // pushes the object to the seen list, with its index as well
+ if (re.indexOf(object) != -1) {
+     k = "["
+     
+     seen.push(object);
     
  } 
-     if (object.constructor == Array) { // if it is an array
-     seen.push(object)
+     if (object.constructor == Array) {
+    
       for (var i = 0; i < object.length; i++) {
           final += f + stringify(object[i],level + 1,seen,re)
           f = "|"
@@ -68,8 +68,8 @@ function stringify(object,level,seen,re) {// define the stringify function as it
       }
      
       return k + "{" + final + "}"
-  } else if (typeof object == "object") { // it is just an object
-      seen.push(object)
+  } else if (typeof object == "object") {
+      
       var addon = "";
       for (var i in object) {
           final += f + stringify(object[i],level + 1,seen,re);
@@ -77,7 +77,7 @@ function stringify(object,level,seen,re) {// define the stringify function as it
           addon += "|" + i;
       }
       return k + "{" + final + addon + "}"
-  } else if (typeof object == "function") { // if it is a function
+  } else if (typeof object == "function") {
      var t = object.toString();
      if (t) {
         var a = t.indexOf("(");
