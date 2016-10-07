@@ -126,7 +126,7 @@ function getBPos(text) { // get the indexes of "{" and "}"
            
             return final;
         } else // object
-        if (d[1]) {
+        if (d[1] !== undefined) {
             final = {};
             if (save) rlist.push(final)
             var a = d.length/2
