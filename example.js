@@ -37,12 +37,12 @@ objects = {
    awesomeness: "Better than JSON",
    anotherfeature: function() {return "Functions!"}
 }
-console.log("RSON can also store functions. Example")
+console.log("RSON can also store functions.(but the unsafe opt must be true) Example")
 console.log(objects);
 var a = RSON.stringify(objects);
 console.log("RSON results: " + a);
 console.log("Parsing back:")
-var b = RSON.parse(a);
+var b = RSON.parse(a,true);
 console.log(b);
 console.log("Calling the function..");
 console.log(b.anotherfeature())
