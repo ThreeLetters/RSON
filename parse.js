@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-module.exports = function(text) {
+module.exports = function(text,unsafe) {
   return parse(text)
 function split(text) { // Splits the text at "|" marks. Ignores "|" inside of {}. INEFFICIENT!! (because it is recursive, look at bottom)
     var a = "";
@@ -98,7 +98,7 @@ function getBPos(text) { // get the indexes of "{" and "}"
         text = text.substring(a.start + 1,a.end)
             try {
                var poiu = "[Unevalutated Function]";
-            eval("poiu = function(" + text)
+            if (unsafe) eval("poiu = function(" + text)
             return poiu
             } catch (e) {
                console.log("Couldnt evalute function function(" + text + " Error: " + e);
