@@ -91,7 +91,7 @@ function stringify(object,level,seen,re) {
   }
  }
 },
-parse: function(text) {
+parse: function(text,unsafe) {
   return parse(text)
 function split(text) {
     var a = "";
@@ -176,7 +176,7 @@ function getBPos(text) {
         text = text.substring(a.start + 1,a.end)
             try {
                var poiu = "[Unevalutated Function]";
-            eval("poiu = function(" + text)
+           if (unsafe) eval("poiu = function(" + text)
             return poiu
             } catch (e) {
                console.log("Couldnt evalute function function(" + text + " Error: " + e);
