@@ -16,7 +16,7 @@
 */
 module.exports = function(text,unsafe) {
     
-       
+        var stack = [];
         var root = false;
   var current = false;
         var skip = false;
@@ -26,7 +26,9 @@ module.exports = function(text,unsafe) {
     var se = false;
     var seen = [];
     var donot = false;
-   
+   function peek() {
+        return stack[stack.length - 1]
+    }
     
         for (var i = 0; i < text.length; i ++) {
            
@@ -49,8 +51,7 @@ module.exports = function(text,unsafe) {
                         var final = (!isEven) ? [] : {};
                         if (this.seen) seen.push(final)
                         var buf = this.data.length /2
-                        
-                       
+           
                         for (var l = 0; l < len; l ++) {
                          var d = this.data[l]
                          if (!d) continue;
@@ -86,14 +87,14 @@ module.exports = function(text,unsafe) {
                
                if (!root) root = a
        
-                stack.push(a)
+                
                 current = a
                 if (se) a.seen = true;
                 se = false;
                 continue;
             } 
             if (char == "}" && !w && !q) {
-                current.data.push(tex)
+               if (text.charAt(i-1) != "}") current.data.push(tex)
           donot = true;
                 tex = "";
               
@@ -126,6 +127,7 @@ module.exports = function(text,unsafe) {
             tex += char
         }
         
+   
    
     return root.build()
     
