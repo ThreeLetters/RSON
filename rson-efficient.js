@@ -20,24 +20,32 @@ module.exports = function(text,unsafe) {
         var root = false;
   var current = [];
         var skip = false;
-        var text = "";
+        var tex = "";
     var q = false;
     var w = false;
     var se = false;
     var seen = [];
+   function peek() {
+        return stack[stack.length - 1]
+    }
+    
         for (var i = 0; i < text.length; i ++) {
+           
             var char = text.charAt(i)
             if (skip) {
-                text += char
+                tex += char
                 skip = false;
                 continue;
             }
-            if (i == "{" && !w && !q) {
+             
+            if (char == "{" && !w && !q) {
+               
                 var a = {
                     data: [],
                     ord: 0,
                     build: function() {
-                        var len = (this.data.length % 2) ? this.data.length : this.data.length / 2
+                    
+                        var len = (this.data.length % 2) ? this.data.length : this.data.length /2
                         var final = (this.data.length % 2) ? [] : {};
                         var buf = (this.data.length % 2) ? 0 : this.data.length /2
                         for (var l = 0; l < len; l ++) {
@@ -61,40 +69,43 @@ module.exports = function(text,unsafe) {
                     }
                 }
          
-                var v = stack.peek()
+                var v = peek()
                if (v) v.data.push(a)
                if (!root) root = a
+       
                 stack.push(a)
                 current = a
                 if (se) seen.push(current.data)
                 se = false;
                 continue;
             } 
-            if (i == "}" && !w && !q) {
+            if (char == "}" && !w && !q) {
+                current.data.push(tex)
+                tex = "";
                current = stack.pop() 
                
                 continue;
             }
-            if (i == "]" && text.charAt(i + 1) == "{") {
+            if (char == "]" && text.charAt(i + 1) == "{") {
                 
               var se = true;
                 continue;
             }
-            if (i == "\"" && !w) {
+            if (char == "\"" && !w) {
                 q = !q
             }
-            if (i == "'" && !q) {
+            if (char == "'" && !q) {
                 w = !w
             }
-            if (i == "\\") {
+            if (char == "\\") {
                 skip = true;
             }
-            if (i == "|") {
-                current.data.push(text)
-                text = "";
+            if (char == "|") {
+                current.data.push(tex)
+                tex = "";
                 continue;
             }
-            text += char
+            tex += char
         }
         
     
