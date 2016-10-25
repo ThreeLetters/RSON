@@ -46,15 +46,15 @@ module.exports = function(text,unsafe) {
                              var pre = d.charAt(0)
                              if (pre == "]") {
                                  var num = parseInt(d.substr(1))
-                                 final[l-buf] = seen[num]
+                                 final[l+buf] = seen[num]
                                  continue;
                              }
-                             final[l-buf] = d;
+                             final[l+buf] = d;
                              
                              
                          } else if (typeof d == "object") {
                              
-                             final[l - buf] = d.build()
+                             final[l + buf] = d.build()
                          }
                         }
                         return final;
