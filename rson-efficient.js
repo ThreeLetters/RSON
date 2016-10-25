@@ -54,6 +54,7 @@ module.exports = function(text,unsafe) {
                        
                         for (var l = 0; l < len; l ++) {
                          var d = this.data[l]
+                         if (!d) continue;
                         var iq = (!isEven) ? l : this.data[l+buf]
         
                          if (typeof d == "string") {
