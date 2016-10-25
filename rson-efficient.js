@@ -16,9 +16,9 @@
 */
 module.exports = function(text,unsafe) {
     
-        var stack = [];
+       
         var root = false;
-  var current = [];
+  var current = false;
         var skip = false;
         var tex = "";
     var q = false;
@@ -26,9 +26,7 @@ module.exports = function(text,unsafe) {
     var se = false;
     var seen = [];
     var donot = false;
-   function peek() {
-        return stack[stack.length - 1]
-    }
+   
     
         for (var i = 0; i < text.length; i ++) {
            
@@ -44,6 +42,7 @@ module.exports = function(text,unsafe) {
                 var a = {
                     data: [],
                     seen: false,
+                    parent: current,
                     build: function() {
                 var isEven = this.data.length % 2 == 0
                         var len = (!isEven) ? this.data.length : this.data.length /2
@@ -77,9 +76,13 @@ module.exports = function(text,unsafe) {
                     }
                 }
          
-                var v = peek()
+             
               
-               if (v) v.data.push(a)
+               if (current) {
+                   current.data.push(a)
+               } else {
+                   current = a
+               }
                
                if (!root) root = a
        
@@ -93,8 +96,8 @@ module.exports = function(text,unsafe) {
                 current.data.push(tex)
           donot = true;
                 tex = "";
-               stack.pop() 
-       current = peek()
+              
+       current = current.parent
 
                 continue;
             }
