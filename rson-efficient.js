@@ -65,6 +65,9 @@ module.exports = function(text,unsafe) {
                                  final[iq] = seen[num]
                                  continue;
                              }
+                            if (pre == "!") {
+                               
+                            }
                              final[iq] = d;
                              
                              
