@@ -14,7 +14,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-module.exports = function(text,unsafe) {
+var RSON = function(text,unsafe) {
     
         var stack = [];
         var root = false;
@@ -138,3 +138,16 @@ module.exports = function(text,unsafe) {
     
     
 }
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+     module.exports = RSON;
+   }
+   else {
+     if (typeof define === 'function' && define.amd) {
+       define([], function() {
+         return RSON;
+       });
+     }
+     else {
+       window.RSON = RSON;
+     }
+    }
