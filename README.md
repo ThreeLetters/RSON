@@ -14,9 +14,8 @@ Rson is much compacter than JSON. It was designed to have a minimum number of ch
 code
 
 
-```
+```js
 var RSON = require('rson');
-
 ...
 
 RSON.stringify(objects); // use to stringify
@@ -35,7 +34,7 @@ non-minified `https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson.j
 
 ##### Usage
 
-```
+```html
 <script type="text/javascript" src="https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson-minified.js"></script>
 ```
 
