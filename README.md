@@ -3,9 +3,8 @@
 # RSON
 Recursive Simplified Object Notation
 
-
 ### Why RSON?
-Rson is much compacter than JSON. It was designed to have a minimum number of charactors. It also supports recursion and functions. Unlike JSON without using much space. RSON is made for pipelines and sockets such as the one you use for child processes where it only supports text. That way, you can send data fast and without lacking detail.
+Rson is much compacter than JSON. It was designed to have a minimum number of charactors. It also supports recursion and functions. RSON is made for preserving complex object structures as a string.
 
 ### Usage
 > npm install rson
@@ -37,5 +36,3 @@ non-minified `https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson.j
 ```html
 <script type="text/javascript" src="https://cdn.rawgit.com/AJS-development/RSON/master/browsers/rson-minified.js"></script>
 ```
-
-
