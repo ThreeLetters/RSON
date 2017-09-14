@@ -1,14 +1,28 @@
 "use strict";
- /*
-  Copyright 2016 Andrew S
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-       http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-   */
-var RSON={stringify:function(t){function e(t,r,n,i){function f(t,e){var r=[];if(e||(e=[]),"object"!=typeof t)return r;e.push(t);for(var n in t)-1==e.indexOf(t[n])?r=r.concat(f(t[n],e)):r.push(t[n]);return r}if(void 0===t)return t;n||(n=[]),r||(r=1),i||(i=f(t));var a="",u="",o="",s=n.indexOf(t);if(-1!=s)return"]"+s;if(-1!=i.indexOf(t)&&(o="[",n.push(t)),t.constructor==Array){for(var l=0;l<t.length;l++)a+=u+e(t[l],r+1,n,i),u="|";return t.length-1&1&&(a+="|"),o+"{"+a+"}"}if("object"==typeof t){var d="";for(var l in t)a+=u+e(t[l],r+1,n,i),u="|",d+="|"+l;return o+"{"+a+d+"}"}if("function"==typeof t){var v=t.toString();if(v){var c=v.indexOf("(");v=v.substring(c+1)}return"!{"+v+"}"}return t.toString()}return e(t)},parse:function(text,unsaf){function split(t){for(var e="",r=[],n=0,i=!0,f=!0,a=!0,u=!1,o=0;o<t.length;o++){var s=t.charAt(o);if("!"==s&&"{"==t.charAt(o+1))u=!0;else{if("\\"==s&&u){f=!f,e+=s;continue}if('"'==s&&f&&a&&u)i=!i;else if("'"==s&&f&&i&&u)a=!a;else if("{"==s&&i&&f)n++;else if("}"==s&&i&&f)n--,0==n&&u&&(u=!1);else if("|"==s&&0==n){r.push(e),e="";continue}}e+=s,f=!0}return r.push(e),r}function getBPos(t){var e=!1,r=!1,n=0,i=0;e=t.indexOf("{");for(var f=0;f<t.length;f++){var a=t.indexOf("{",n),u=t.indexOf("}",n);if(u>a&&-1!=a?(i++,n=a+1):(i--,n=u+1),0==i)break}return r=n,{start:e,end:n-1}}function parse(text,level,rlist){if("]"==text.charAt(0))return rlist[text.substring(1)];if("!"==text.charAt(0)){var a=getBPos(text);text=text.substring(a.start+1,a.end);try{var poiu="[Unevalutated Function]";if(unsaf) eval("poiu = function("+text);return poiu}catch(e){return console.log("Couldnt evalute function function("+text+" Error: "+e),"[Unevalutated Function]"}}if(-1==text.indexOf("|"))return text;level||(level=1);var final=[];rlist||(rlist=[]);var save=!1;"["==text.charAt(0)&&(save=!0);var a=getBPos(text);text=text.substring(a.start+1,a.end);var g=[],d=split(text);if(1&d.length){save&&rlist.push(final);for(var i=0;i<d.length;i++)d[i]&&(final[i]=parse(d[i],level+1,rlist));return final}if(d[1] === undefined)return d[0];final={},save&&rlist.push(final);for(var a=d.length/2,i=0;a>i;i++)d[i]&&(final[d[i+a]]=parse(d[i],level+1,rlist));return final}return parse(text)}};"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=RSON:"function"==typeof define&&define.amd?define([],function(){return RSON}):window.RSON=RSON;
+/*
+MIT License
+
+Copyright (c) 2017 Andrew S (Andrews54757_at_gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+var RSON={stringify:function(g){function k(c){if(null===c)return"l";if("object"===typeof c){var b=[];if(c.constructor===Array){var a=l.indexOf(c);if(-1!=a)return"a"+a;l.push(c);for(var d=0;d<c.length;++d)b.push(k(c[d]));return"{"+b.join("|")+(c.length-1&1?"|":"")+"}"}a=h.indexOf(c);if(-1!=a)return"o"+a;h.push(c);a=[];for(d in c)b.push(k(c[d])),a.push(d);return"{"+b.join("|")+"|"+a.join("|")+"}"}if("string"===typeof c)return"s"+c.replace(/[{}|\\]/g,"$&");if("number"===typeof c)return"n"+c;if("undefined"===
+typeof c)return"u"}var h=[],l=[];return k(g)},parse:function(g){function k(b){switch(b[0]){case "{":return h(b.slice(1,b.length-1));case "s":return b.slice(1).join("");case "n":return parseFloat(b.slice(1).join(""));case "l":return null;case "o":return l[parseInt(b.slice(1).join(""))];case "a":return c[parseInt(b.slice(1).join(""))]}}function h(b){for(var a=0,d=b.length,f=[],e=[];a<d;++a)switch(b[a]){case "\\":++a;break;case "{":f.push("{");var g=1;for(++a;a<d;a++)if("\\"===b[a])a++;else if("{"===
+b[a])g++,f.push("{");else if("}"===b[a]){if(g--,f.push("}"),0===g)break}else f.push(b[a]);break;case "|":e.push(f);f=[];break;default:f.push(b[a])}if(0===e.length)return k(f);e.push(f);if(e.length&1){b=[];c.push(b);for(a=0;a<e.length;a++)void 0!==e[a][0]&&b.push(h(e[a]));return b}b={};l.push(b);d=e.length/2;for(a=0;a<d;++a)b[e[a+d].join("")]=h(e[a]);return b}var l=[],c=[];return h(g.split(""))}};
+"undefined"!==typeof module&&"undefined"!==typeof module.exports?module.exports=RSON:"function"===typeof define&&define.amd?define([],function(){return RSON}):window.RSON=RSON;

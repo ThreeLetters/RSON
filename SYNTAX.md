@@ -4,6 +4,31 @@ In order to keep RSON as compact as possible, the syntax is mostly machine reada
 ## Syntax
 Any non raw data (such as objects) are wrapped in brackets. Instead of a comma RSON uses the | key for dividers.
 
+#### Types
+Data types are determined by reading the first charactor in a value.
+
+```
+RSON.stringify([
+    'hello',
+    52,
+    undefined
+]);
+
+/* Returns
+
+{shello|n52|u}
+
+Data types:
+
+s -> String
+n -> Number
+u -> Undefined
+l -> Null
+a -> Array Pointer  -|- Used for recursive circular data structures
+o -> Object Pointer -|
+*/
+```
+
 #### For arrays
 Arrays ALLWAYS have an odd number of "|". That is how it knows it is an array. The data is stored in an index fashion like this:
 
@@ -27,22 +52,8 @@ These objects in RSON always have an odd number of "|". They are twice the lengt
 {item1|item2|item3|item4|I1name|I2name|I3name|I4name}
 ```
 
-#### Functions
-RSON also stores functions unlike JSON, it is stored in this manner
-```
-var object = [
-    "hello",
-    function() {return "test"}
-]
-console.log(RSON.stringify(objects))
-/*
-{hello|!) {return "test"}}
-*/
-```
-
-
 #### Recursion
-RSON automatically detects recursive (circular) data structures. It marks the first appearance of that item by putting a "[" before the brackets. For example 
+RSON automatically detects recursive (circular) data structures.
 
 
 ```
@@ -58,10 +69,6 @@ Is circular so in RSON it is converted to
 
 
 ```
-[{item1|item2|]0}
+{item1|item2|a0}
 ```
-
-
-To any duplicates of it, it marks it as a "]" with a numerical index right by it. The index is the index of the recursive item from left to right. Whenever the compiler reads a "[" it pushes it to an array and whenever a "]" is followed, it gets the value stored in the array.
-
 

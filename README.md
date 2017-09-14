@@ -21,7 +21,7 @@ RSON.stringify(objects); // use to stringify
 
 ...
 
-RSON.parse(rsontext,unsafe?); // use to parse (set unsafe to true to parse functions)
+RSON.parse(rsontext); // use to parse
 ```
 
 ### For browsers

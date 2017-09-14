@@ -1,17 +1,17 @@
 {
-  "name": "rson",
-  "version": "1.5.8",
-  "description": "Recursive Simplified Object Notation",
-  "main": "index.js",
-  "tonicExampleFilename": "example.js",
-  "scripts": {
-    "test": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AJS-development/RSON.git"
-  },
-  "keywords": [
+    "name": "rson",
+    "version": "1.6.0",
+    "description": "Recursive Simplified Object Notation",
+    "main": "index.js",
+    "tonicExampleFilename": "example.js",
+    "scripts": {
+        "test": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AJS-development/RSON.git"
+    },
+    "keywords": [
     "json",
     "recursive",
     "rson",
@@ -19,10 +19,10 @@
     "simplified",
     "compact"
   ],
-  "author": "andrews54757",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/AJS-development/RSON/issues"
-  },
-  "homepage": "https://github.com/AJS-development/RSON#readme"
+    "author": "andrews54757",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/AJS-development/RSON/issues"
+    },
+    "homepage": "https://github.com/AJS-development/RSON#readme"
 }

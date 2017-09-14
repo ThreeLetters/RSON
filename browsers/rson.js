@@ -1,235 +1,175 @@
 "use strict";
- /*
-  Copyright 2016 Andrew S
+/*
+MIT License
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Copyright (c) 2017 Andrew S (Andrews54757_at_gmail.com)
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-   */
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 var RSON = {
-stringify: function(object) {
-  return stringify(object)
-function stringify(object,level,seen,re) {
-   if (object === undefined) return object
-     if (!seen) seen = [];
-     
-     if (!level) level = 1;
-     if (!re) {
-         function getList(l,g) {
-             var final = [];
-             if (!g) g = [];
-             
-             if (typeof l != "object") {
-                return final
-             }
-             g.push(l)
-             for (var i in l) {
-                 if (g.indexOf(l[i]) != -1) {
-                     final.push(l[i])
-                     continue;
-                 }
-                 final = final.concat(getList(l[i],g))
-             }
-             return final;
-         }
-        re = getList(object)
-     }
-     var final = "";
-     var f = "";
-    
-     var k = "";
-     var ind = seen.indexOf(object) 
-     if (ind != -1) {
-         return "]" + ind
-         
-     }
-     
-    
- if (re.indexOf(object) != -1) {
-     k = "["
-     
-     seen.push(object);
-    
- } 
-     if (object.constructor == Array) {
-    
-      for (var i = 0; i < object.length; i++) {
-          final += f + stringify(object[i],level + 1,seen,re)
-          f = "|"
-      }
-      if ((object.length - 1) & 1) {
-          final += "|"
-      }
-     
-      return k + "{" + final + "}"
-  } else if (typeof object == "object") {
-      
-      var addon = "";
-      for (var i in object) {
-          final += f + stringify(object[i],level + 1,seen,re);
-          f = "|";
-          addon += "|" + i;
-      }
-      return k + "{" + final + addon + "}"
-  } else if (typeof object == "function") {
-     var t = object.toString();
-     if (t) {
-        var a = t.indexOf("(");
-        t = t.substring(a + 1)
-     }
-     return "!{" + t + "}"
-     } else {
-      return object.toString()
-  }
- }
-},
-parse: function(text,unsafe) {
-  return parse(text)
-function split(text) {
-    var a = "";
-    var f = [];
-    var t = 0;
-    var l = true;
-    var h = true;
-    var g = true
-    var j = false;
-    for (var i = 0; i < text.length; i ++) {
-        var b = text.charAt(i)
-        if (b=="!" && text.charAt(i + 1) == "{") {
-           j = true;
-        }
-        else if (b=="\\" && j) {
-        h = !h;
-        a += b
-        continue;
-        } else if (b == "\"" && h && g && j) {
-          
-        l = !l
-       } else if (b == "'" && h && l && j) {
-          g = !g
-          } else if (b == "{" && l && h) {
-            t++;
-        } else if (b == "}" && l && h) {
-            t--;
-            if (t == 0 && j) j = false;
-        }
-        else if (b == "|" && t == 0) {
-            f.push(a);
-            a = "";
-            continue;
-        }
-        a += b;
-        h = true;
-    }
-    f.push(a)
-    return f
-    
-}
-function getBPos(text) {
-    var a = 0;
-    var start = false;
-    var end = false;
-    var index = 0;
-    var e = 0;
-    var t = 0;
-    var lindex = 0;
-    var ind = false;
+    stringify: function (object) {
+        var OBJ_SEEN = [],
+            ARR_SEEN = [];
 
-  
-    start = text.indexOf("{");
-    
-    for (var i = 0; i < text.length; i++) {
-        var q = text.indexOf("{",index);
-        var w = text.indexOf("}",index);
-       
-        if (q < w && q != -1) {
-            t ++;
-            index = q + 1;
-        } else {
-            t--;
-            index = w + 1;
+        function escape(str) {
+            return str.replace(/[{}|\\]/g, '\$&');
         }
-        if (t == 0) break
+
+        function recurse(object) {
+
+            if (object === null) {
+                return 'l';
+            } else if (typeof object === 'object') {
+                var out = [];
+                if (object.constructor === Array) { // array
+                    var ind = ARR_SEEN.indexOf(object);
+                    if (ind != -1) return 'a' + ind;
+                    ARR_SEEN.push(object);
+                    for (var i = 0; i < object.length; ++i) {
+                        out.push(recurse(object[i]));
+                    }
+                    return '{' + out.join('|') + (((object.length - 1) & 1) ? '|' : '') + '}';
+                } else { // object
+                    var ind = OBJ_SEEN.indexOf(object);
+                    if (ind != -1) return 'o' + ind;
+                    OBJ_SEEN.push(object);
+                    var out2 = [];
+                    for (var i in object) {
+                        out.push(recurse(object[i]));
+                        out2.push(i);
+                    }
+                    return '{' + out.join('|') + '|' + out2.join('|') + '}';
+                }
+
+            } else if (typeof object === 'string') {
+                return 's' + escape(object);
+            } else if (typeof object === 'number') {
+                return 'n' + object;
+            } else if (typeof object === 'undefined') {
+                return 'u';
+            }
+
+        }
+        return recurse(object)
+    },
+    parse: function (string) {
+        var OBJ_DICT = [];
+        var ARR_DICT = [];
+
+        function cast(sc) {
+            switch (sc[0]) {
+                case '{':
+                    return recurse(sc.slice(1, sc.length - 1));
+                    break;
+                case 's':
+                    return sc.slice(1).join('');
+                    break;
+                case 'n':
+                    return parseFloat(sc.slice(1).join(''));
+                    break;
+                case 'u':
+                    return undefined;
+                    break;
+                case 'l':
+                    return null;
+                    break;
+                case 'o':
+                    return OBJ_DICT[parseInt(sc.slice(1).join(''))]
+                    break;
+                case 'a':
+                    return ARR_DICT[parseInt(sc.slice(1).join(''))]
+                    break;
+            }
+        }
+
+        function recurse(str) {
+            var i = 0,
+                len = str.length,
+                current = [],
+                split = [];
+
+            for (; i < len; ++i) {
+
+                switch (str[i]) {
+                    case '\\':
+                        ++i;
+                        break;
+                    case '{':
+                        current.push('{');
+                        var lvl = 1;
+                        for (++i; i < len; i++) {
+                            if (str[i] === '\\') {
+                                i++;
+                            } else
+                            if (str[i] === '{') {
+                                lvl++;
+                                current.push('{');
+                            } else if (str[i] === '}') {
+                                lvl--;
+                                current.push('}');
+                                if (lvl === 0) break;
+                            } else current.push(str[i]);
+                        }
+                        break;
+                    case '|':
+                        split.push(current);
+                        current = [];
+                        break;
+                    default:
+                        current.push(str[i]);
+                        break;
+                }
+            }
+            if (split.length === 0) {
+                return cast(current);
+            }
+            split.push(current);
+            if (split.length & 1) {
+                var array = [];
+                ARR_DICT.push(array);
+
+                for (var i = 0; i < split.length; i++) {
+                    if (split[i][0] !== undefined) array.push(recurse(split[i]));
+                }
+                return array;
+            } else {
+                var object = {};
+                OBJ_DICT.push(object);
+                var half = split.length / 2;
+                for (var i = 0; i < half; ++i) {
+                    object[split[i + half].join('')] = recurse(split[i]);
+                }
+                return object;
+            }
+        }
+        return recurse(string.split(''));
     }
-    end = index;
-  
-  
-   
-    return {start: start,end: index - 1}
-    
 }
-    function parse(text,level,rlist) {
-        if (text.charAt(0) == "]") {
-            return rlist[text.substring(1)]
-            
-        }
-        if (text.charAt(0) == "!") {
-            var a = getBPos(text)
-        text = text.substring(a.start + 1,a.end)
-            try {
-               var poiu = "[Unevalutated Function]";
-           if (unsafe) eval("poiu = function(" + text)
-            return poiu
-            } catch (e) {
-               console.log("Couldnt evalute function function(" + text + " Error: " + e);
-               return "[Unevalutated Function]"
-            }
-        }
-        
-      if (text.indexOf("|") == -1) return text
-        if (!level) level = 1
-            var final = [];
-            if (!rlist) rlist = [];
-        var save = false;
-        if (text.charAt(0) == "[") save = true
-        var a = getBPos(text)
-        text = text.substring(a.start + 1,a.end)
-        var g = [];
-       var d = split(text)
-        
-        if (d.length & 1) {
-            if (save) rlist.push(final)
-            for (var i = 0; i < d.length; i ++) {
-                if (!d[i]) continue;
-                final[i] = parse(d[i],level + 1,rlist)
-            }
-           
-            return final;
-        } else 
-        if (d[1] !== undefined) {
-            final = {};
-            if (save) rlist.push(final)
-            var a = d.length/2
-            for (var i = 0; i < a; i ++) {
-                if (!d[i]) continue;
-                final[d[i + a]] = parse(d[i],level + 1,rlist)
-            }
-        } else {
-            return d[0]
-        }
-        return final;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = RSON;
+} else {
+    if (typeof define === 'function' && define.amd) {
+        define([], function () {
+            return RSON;
+        });
+    } else {
+        window.RSON = RSON;
     }
 }
-  }
-  
-  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-     module.exports = RSON;
-   }
-   else {
-     if (typeof define === 'function' && define.amd) {
-       define([], function() {
-         return RSON;
-       });
-     }
-     else {
-       window.RSON = RSON;
-     }
-    }
