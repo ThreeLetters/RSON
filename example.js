@@ -1,5 +1,4 @@
 var RSON = require("rson")
-console.log(RSON.version())
 var objects = {
     name: "RSON",
     awesomeness: "to the roof",
