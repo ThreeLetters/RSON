@@ -69,6 +69,9 @@ Is circular so in RSON it is converted to
 
 
 ```
-{item1|item2|a0}
+{sitem1|sitem2|a0}
 ```
 
+#### Escape Charactor
+
+Since RSON uses {,} and |, these charactors are escaped using `\`

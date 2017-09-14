@@ -28,7 +28,7 @@ var RSON = {
             ARR_SEEN = [];
 
         function escape(str) {
-            return str.replace(/[{}|\\]/g, '\$&');
+            return str.replace(/[{}|\\]/g, '\\$&');
         }
 
         function recurse(object) {
@@ -72,10 +72,14 @@ var RSON = {
         var OBJ_DICT = [];
         var ARR_DICT = [];
 
+        function unescape(str) {
+            return str.replace(/\\(.)/g, '$1');
+        }
+
         function cast(sc) {
             switch (sc[0]) {
                 case 's':
-                    return sc.slice(1).join('');
+                    return unescape(sc.slice(1).join(''));
                     break;
                 case 'n':
                     return parseFloat(sc.slice(1).join(''));
@@ -106,11 +110,10 @@ var RSON = {
                 current = [],
                 split = [];
 
-
             for (; i < len; ++i) {
                 switch (str[i]) {
                     case '\\':
-                        ++i;
+                        current.push('\\', str[++i]);
                         break;
                     case '{':
                         current.push('{');
@@ -118,7 +121,7 @@ var RSON = {
                         for (++i; i < len; i++) {
                             current.push(str[i]);
                             if (str[i] === '\\') {
-                                i++;
+                                current.push(str[++i]);
                             } else
                             if (str[i] === '{') {
                                 lvl++;

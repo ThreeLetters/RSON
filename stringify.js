@@ -26,11 +26,10 @@ module.exports = function (object) {
         ARR_SEEN = [];
 
     function escape(str) {
-        return str.replace(/[{}|\\]/g, '\$&');
+        return str.replace(/[{}|\\]/g, '\\$&');
     }
 
     function recurse(object) {
-
         if (object === null) {
             return 'l';
         } else if (typeof object === 'object') {
