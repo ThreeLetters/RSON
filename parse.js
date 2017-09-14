@@ -27,9 +27,6 @@ module.exports = function (string) {
 
     function cast(sc) {
         switch (sc[0]) {
-            case '{':
-                return recurse(sc.slice(1, sc.length - 1));
-                break;
             case 's':
                 return sc.slice(1).join('');
                 break;
@@ -52,13 +49,18 @@ module.exports = function (string) {
     }
 
     function recurse(str) {
+
+        if (str[0] !== '{') {
+            return cast(str);
+        }
+        str = str.slice(1, str.length - 1);
         var i = 0,
             len = str.length,
             current = [],
             split = [];
 
-        for (; i < len; ++i) {
 
+        for (; i < len; ++i) {
             switch (str[i]) {
                 case '\\':
                     ++i;
@@ -67,17 +69,16 @@ module.exports = function (string) {
                     current.push('{');
                     var lvl = 1;
                     for (++i; i < len; i++) {
+                        current.push(str[i]);
                         if (str[i] === '\\') {
                             i++;
                         } else
                         if (str[i] === '{') {
                             lvl++;
-                            current.push('{');
                         } else if (str[i] === '}') {
                             lvl--;
-                            current.push('}');
                             if (lvl === 0) break;
-                        } else current.push(str[i]);
+                        }
                     }
                     break;
                 case '|':
@@ -89,9 +90,7 @@ module.exports = function (string) {
                     break;
             }
         }
-        if (split.length === 0) {
-            return cast(current);
-        }
+
         split.push(current);
         if (split.length & 1) {
             var array = [];
